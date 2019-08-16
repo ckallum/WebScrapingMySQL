@@ -12,9 +12,16 @@ try:
     if mydb.is_connected():
         db_info = mydb.get_server_info()
         print("Connected to MySQL database... MySQL Server version on ", db_info)
-        mycursor = mydb.cursor()
-        mycursor.execute("")
+        mycursor = mydb.cursor(buffered=True)
         codes = []
+        try:
+            mycursor.execute("SELECT code FROM region_all")
+            for row in mycursor.fetchall():
+                codes.append(row[0])
+            print(codes)
+        except:
+            pass
+
         with open("data.json", encoding="utf-8") as jsonfile:
             jsonobjs = json.load(jsonfile)
 
